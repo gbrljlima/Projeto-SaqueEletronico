@@ -50,6 +50,7 @@ Adaptar o projeto principal para rodar esse código (chato) - 70%
         Colocar as cedulas disponiveis no inicio do sistema-
         Refatorar as funções de adicionar e remover cédulas-
 *******************************************************************************/
+// test commit
 #include "catalogo.h"
 #include "estrutura.h"
 #include <stdio.h>
