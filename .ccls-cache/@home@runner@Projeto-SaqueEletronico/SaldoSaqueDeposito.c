@@ -2,50 +2,79 @@
 #include <stdlib.h>
 #include <string.h>
 #include "catalogo.h"
-#include "estrutura.h"
 //Função para deposito
 void deposito()
 {
-    float deposito;
-    printf("Informe a quantia que você irá depositar: R$");
-    int lidoComSucesso = scanf("%f", &deposito);
-    while(lidoComSucesso!=1){  
-      while(getchar() != '\n');
-      printf("Depósito inválido!\nInforme novamente: ");
-      lidoComSucesso = scanf("%f", &deposito);
-    }
-    
-    usuario[numeroDaContaEntrada].saldo+=deposito;    
+  int deposito;
+  printf("Informe a quantia que você irá depositar: R$");
+  int lidoComSucesso = scanf("%d", &deposito);
+  while(lidoComSucesso!=1){  
+    while(getchar() != '\n');
+    printf("Depósito inválido!\nInforme novamente: ");
+    lidoComSucesso = scanf("%d", &deposito);
+  }
+  if(deposito >= 0)
+    usuario[numeroDaContaEntrada].saldo+=deposito;   
+  else
+    printf("\n Valor inválido! \n");
 }
 void saldo() //Função para verificação de saldo
 {
-  printf("Seu saldo é: %.2f\n", usuario[numeroDaContaEntrada].saldo);
+  printf("Seu saldo é: R$%.2f\n", usuario[numeroDaContaEntrada].saldo);
 }
 int saqueCedulas(int valor) //Função para o calculo de notas
 { 
-  if (usuario[numeroDaContaEntrada].saldo < valor) {
-      printf("Saldo insuficiente!\n");
-      return 0;          
-    }
-  int contador=0, cedulaDisponivel[7]={0}, i, unidade;
-  unidade=valor%10;
-  for(i=0;i<7;i++){
-    if(tipoCedulas[i].disponivel==1 && tipoCedulas[i].quantidadeCedulas>0){ //Verifica as cedulas disponiveis e a quantidade
-      cedulaDisponivel[contador]=i; //Adiciona o tipo de cedula disponivel de 0 a 6
-      contador++;
-    }
+  if(valor==0)
+    return 0;
+  else if (usuario[numeroDaContaEntrada].saldo < valor) {
+    printf("\nSaldo insuficiente!\n");
+    return 0;
+  }else if(valor > dinheiroMaquina()){
+    printf("\nNotas insuficientes\n");
+    return 0;
   }
-  int numeroDeNotas[contador]; //Será guardado o número de notas de 100, 20 e 2, nessa sequencia.
-  int resto;
-  contador-=1;
-  printf("Você receberá:\n");
-  for(i=contador;i>=0;i-- ){ //Começa da cedula de maior valor
-    numeroDeNotas[i]=valor/tipoCedulas[cedulaDisponivel[i]].cedulas;
-    resto=valor%tipoCedulas[cedulaDisponivel[i]].cedulas;
-    valor=resto;
-    tipoCedulas[cedulaDisponivel[i]].quantidadeCedulas-=numeroDeNotas[i];
-    if(numeroDeNotas[i]!=0) {
-        printf("%d cédulas de R$%d\n", numeroDeNotas[i], tipoCedulas[cedulaDisponivel[i]].cedulas);
+  int contador=0, cedulaDisponivel[7]={0}, i, unidade, dezena;
+  unidade=valor%10;//Criar dezena para valores acima de 110~
+  dezena=valor%100;
+  int notas[7]={0}; //Será guardado o número de notas de 100, 20 e 2, nessa sequencia.
+  printf("\nVocê receberá:\n");
+  usuario[numeroDaContaEntrada].saldo -= valor;
+  for (i=6; i>=0 ; i--) {
+    if (tipoCedulas[i].disponivel==1&&tipoCedulas[i].quantidade>0) {
+      if(valor >= tipoCedulas[i].cedulas && (unidade==1||unidade==3)){
+        if(dezena>10){
+          if(tipoCedulas[i].cedulas==100 || tipoCedulas[i].cedulas==200){
+            notas[i]=valor/tipoCedulas[i].cedulas;
+            valor=valor%tipoCedulas[i].cedulas;
+          }
+          else if(tipoCedulas[i].cedulas!=2){
+            notas[i]=valor/tipoCedulas[i].cedulas-1;
+            valor=valor%tipoCedulas[i].cedulas + tipoCedulas[i].cedulas;
+          }
+          else{
+            notas[i]=valor/tipoCedulas[i].cedulas;
+            valor=valor%tipoCedulas[i].cedulas + tipoCedulas[i].cedulas;
+          }
+        }
+        else{
+          if(tipoCedulas[i].cedulas!=2)
+            notas[i]=valor/tipoCedulas[i].cedulas - 1;
+          else
+            notas[i]=valor/tipoCedulas[i].cedulas;
+          valor=valor%tipoCedulas[i].cedulas + tipoCedulas[i].cedulas;
+          
+        }
+        tipoCedulas[i].quantidade-=notas[i];
+      }
+      else{
+        while (valor >= tipoCedulas[i].cedulas) {  
+          notas[i]++;
+          valor -= tipoCedulas[i].cedulas;
+          tipoCedulas[i].quantidade--;
+        }
+      }
+      if(notas[i]!=0)
+        printf("%d cédula(s) de R$%d.00\n", notas[i], tipoCedulas[i].cedulas);
     }
   }
 }
