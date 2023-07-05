@@ -56,7 +56,7 @@ int main() {
         
         break;  
       }
-      condicao=outraOperacao(condicao);    
+      condicao=outraOperacao(condicao);
     }
   }
   return 0;

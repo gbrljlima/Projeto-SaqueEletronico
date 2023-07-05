@@ -10,7 +10,7 @@ void deposito()
   int lidoComSucesso = scanf("%d", &deposito);
   while(lidoComSucesso!=1){  
     while(getchar() != '\n');
-    printf("Depósito inválido!\nInforme novamente: ");
+    printf("\nDepósito inválido!\nInforme novamente: ");
     lidoComSucesso = scanf("%d", &deposito);
   }
   if(deposito >= 0)

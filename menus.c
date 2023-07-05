@@ -1,5 +1,6 @@
 #include "catalogo.h"
 #include <stdio.h>
+#include <stdlib.h>
 //Função para o menu
 int menu()
 {
@@ -55,16 +56,19 @@ int outraOperacao(int condicao){
     while (1){
       printf("\nGostaria de fazer outra operação? (s/n)");
       printf("\nSua opção: ");
-      scanf(" %c", &repetir);
+      scanf(" %1c", &repetir);
       if(repetir == 's'){
-        condicao=1;
+        condicao=1;        
         break;
       }else if (repetir == 'n'){
         condicao=0;
+        system("clear");
         break;
       }else {
+        while(getchar()=='\n');
         printf ("\nOpção inválida.\n");
       }
+
         
   }
   } 

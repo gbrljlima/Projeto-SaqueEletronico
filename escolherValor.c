@@ -14,8 +14,7 @@ int escolherValor() {
   printf("(3) R$500.00 - (4) Outro valor\n");
   printf("(5) Sair\n");
   printf("Escolha uma opção: ");
-  int lidoComSucesso =
-      scanf("%d", &escolha); // Declarado variavel lidoComSucesso para saber se
+  int lidoComSucesso = scanf("%d", &escolha); // Declarado variavel lidoComSucesso para saber se
                              // a variavel escolha receberá um valor válido
   while (lidoComSucesso != 1 || escolha < 1 || escolha > 5) {
     printf("Opção inválida!\nDigite a opção novamente: ");
@@ -35,6 +34,11 @@ int escolherValor() {
   case 4:
     printf("Qual valor você deseja?\n");
     lidoComSucesso = scanf("%d", &valor);
+    while (lidoComSucesso != 1) { // Esse é o comando para impedir que o usuário coloque letras no lugar de números
+      while (getchar() != '\n'); // Limpa o buffer de entrada
+      printf("\nConta inválida!\nInforme novamente: ");
+      lidoComSucesso = scanf("%d", &numeroDaContaEntrada);
+    }
     if(valor==0)
       break;
     if (tipoCedulas[1].disponivel == 1) { // Caso a nota de R$5 esteja

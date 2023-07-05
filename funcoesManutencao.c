@@ -14,40 +14,50 @@ void mostrarCedulas(){
 void reporTudo() //Função para repor a qntd de todas as cédulas
 {
   int repor;
-  printf("Qual a quantidade de cédulas que gostaria de adicionar?\n");
-  scanf("%d", &repor);
-  for(int i=0;i<7;i++){
-      if(tipoCedulas[i].disponivel==1) //Necessario para mostrar apenas cédulas habilitadas
+  printf("\nQual a quantidade de cédulas que gostaria de adicionar?\n");
+  int lidoComSucesso = scanf("%d", &repor);
+  while(lidoComSucesso!=1){  
+    while(getchar() != '\n');
+    printf("\nValor inválido!\n\nInforme novamente: ");
+    lidoComSucesso = scanf("%d", &repor);
+  }
+  for(int i=0;i<7;i++){ //Necessario para mostrar apenas cédulas habilitadas
         tipoCedulas[i].quantidade+=repor;
   }
   printf("\nAs cédulas foram depósitadas!\n");
 }
 void reporIndividual() //Função para repor individualmente a qntd de cédula
 {
-  int opcao, repor;
-  for(int i=0;i<7;i++){
-    if(tipoCedulas[i].disponivel==1) //Necessario para mostrar apenas cédulas habilitadas
-    printf("(%d) R$%d.00 - %d cédulas disponíveis\n\n", i, tipoCedulas[i].cedulas, tipoCedulas[i].quantidade);
+  int opcao, repor, c;
+  printf("\n");
+  for(int i=0;i<7;i++){//Necessario para mostrar apenas cédulas habilitadas
+      printf("(%d) R$%d.00 - %d cédulas disponíveis\n\n", i, tipoCedulas[i].cedulas, tipoCedulas[i].quantidade);
   }
   printf("(7) Sair\n\n");
   printf("Escolha uma opção: ");
-  scanf("%d", &opcao);
+  int lidoComSucesso = scanf("%d", &opcao);
+  while(lidoComSucesso!=1){  
+    while(getchar() != '\n');
+    printf("\nOpção inválida!\nInforme novamente: ");
+    lidoComSucesso = scanf("%d", &opcao);
+  }
   if(opcao == 7){
     return;
   }
   else if(opcao>=0 && opcao<=6){
-    if(tipoCedulas[opcao].disponivel==1){
       printf("Qual a quantidade de cédulas que gostaria de adicionar?\n");
-      scanf("%d", &repor);
+      lidoComSucesso = scanf("%d", &repor);
+      while(lidoComSucesso!=1){  
+        while(getchar() != '\n');
+        printf("\nValor inválido!\nInforme novamente: ");
+        lidoComSucesso = scanf("%d", &repor);
+      }
       tipoCedulas[opcao].quantidade+=repor;
-    }
-    else
-      printf("Cédula está desabilitada\n");
   }
 }
 void disponibilidadeCedula() //Função para alterar a disponibilidade de um tipo de cédula
 { 
-  int opcao /*,cedulaEditar*/;
+  int opcao /*cedulaEditar*/;
   char notaUtilizada[7][30];
   printf("Qual cédula gostaria de editar?\n\n");
   for(int i=0;i<7;i++){
@@ -59,7 +69,12 @@ void disponibilidadeCedula() //Função para alterar a disponibilidade de um tip
   }
   printf("(7) Sair\n\n");
   printf("Escolha uma opção: ");
-  scanf("%d", &opcao);
+  int lidoComSucesso = scanf("%d", &opcao);
+  while(lidoComSucesso!=1){  
+    while(getchar() != '\n');
+    printf("\nOpção inválida!\nInforme novamente: ");
+    lidoComSucesso = scanf("%d", &opcao);
+  }
   if(opcao == 7){
     return;
   }
@@ -67,7 +82,12 @@ void disponibilidadeCedula() //Função para alterar a disponibilidade de um tip
     printf("\nEscolha a disponibilidade:");
     printf("\n(0) Desabilitado \t (1) Habilitado\n");
     int opcaoDisponibilidade;
-    scanf("%d", &opcaoDisponibilidade);
+    int lidoComSucesso = scanf("%d", &opcaoDisponibilidade);
+    while(lidoComSucesso!=1){  
+      while(getchar() != '\n');
+      printf("\nOpção inválida!\n\nInforme novamente: ");
+      lidoComSucesso = scanf("%d", &opcao);
+    }
     switch (opcaoDisponibilidade){
       case 0:
         tipoCedulas[opcao].disponivel = 0;
@@ -83,14 +103,6 @@ void disponibilidadeCedula() //Função para alterar a disponibilidade de um tip
   else{
     printf("\n\n\tOpção inválida!\t\n\n");
   }
-
-  /*if(opcao >= 1 || opcao<=7){
-    printf("Disponibilidade da cédula: %d\n", tipoCedulas[cedulaEditar-1].disponivel);
-    printf("Escolha uma das opções abaixo:\n");
-    printf("(0). Desabilitar    (1). Habilitar\n");
-    printf("Escolha: ");
-    scanf("%d", &tipoCedulas[cedulaEditar-1].disponivel);
-  }*/
 }
 
 void status()
@@ -105,7 +117,7 @@ void status()
   tipoCedulas[0].disponivel=1; //Indicado que as cedulas 2,20 e 100 estão disponiveis
   tipoCedulas[3].disponivel=1;
   tipoCedulas[5].disponivel=1;
-  usuario[99].numeroDaConta=1100;
+  usuario[99].numeroDaConta=1100;//Conta criada para fim de testes no código.
   strcpy(usuario[99].nome, "Luciano");
   usuario[99].saldo = 10000;
   usuario[99].senha[0] = 1;
